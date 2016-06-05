@@ -10,6 +10,54 @@
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
+  <script type="text/javascript" src="canvasjs.min.js"></script>
+  <script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      theme: "theme2",
+      title:{
+        text: "Weight Chart"
+      },
+      animationEnabled: true,
+      axisX: {
+        valueFormatString: "MMM",
+        interval:1,
+        intervalType: "month"
+        
+      },
+      axisY:{
+        includeZero: false
+        
+      },
+      data: [
+      {        
+        type: "line",
+        //lineThickness: 3,        
+        dataPoints: [
+        { x: new Date(2012, 00, 1), y: 450 },
+        { x: new Date(2012, 01, 1), y: 414},
+        { x: new Date(2012, 02, 1), y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle"},
+        { x: new Date(2012, 03, 1), y: 460 },
+        { x: new Date(2012, 04, 1), y: 450 },
+        { x: new Date(2012, 05, 1), y: 500 },
+        { x: new Date(2012, 06, 1), y: 480 },
+        { x: new Date(2012, 07, 1), y: 480 },
+        { x: new Date(2012, 08, 1), y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross"},
+        { x: new Date(2012, 09, 1), y: 500 },
+        { x: new Date(2012, 10, 1), y: 480 },
+        { x: new Date(2012, 11, 1), y: 510 }
+        
+        ]
+      }
+      
+      
+      ]
+    });
+
+chart.render();
+}
+</script>
 </head>
 <body>
 
@@ -22,7 +70,7 @@
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
         </button>
         <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{ime vaše aplikacije}</a>
+        <a class="navbar-brand" href="index.html">Weigth loss helper</a>
         <!-- KONEC: Ime vaše aplikacije -->
       </div>
       <div class="collapse navbar-collapse" id="menujska-vrstica">
@@ -40,7 +88,144 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
-        <p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8">Input data or choose user</div>
+							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"></select></div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<input id="name" type="text" class="form-control input-mini" placeholder="Name">
+						<input id="surname" type="text" class="form-control" placeholder="Surname">
+						<input id="birthday" type="text" class="form-control" placeholder="Birthday">
+						<input id="EHR" type="text" readonly class="form-control" placeholder="Your given EHR ID">
+						<button type="button" class="btn btn-primary btn-xs" onclick="kreirajEHRzaBolnika()">Add person</button><span id="message"></span>
+				  	</div>
+				</div>
+			</div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+		        <div id="chartContainer" style="height: 200px; width: 100%;"></div>
+		    </div>
+		</div>
+		</div>
+			<div class="row">
+              <div class="col-lg-12 text-center">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <h3 class="formName" id="formNaslov">Vital Signs</h3></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form id="form-new-entity">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Weigth</span>
+                                        <input id="weight" type="text" class="form-control bmi-element">
+                                        <span class="input-group-addon">kg</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Height</span>
+                                        <input id="height" type="text" class="form-control bmi-element">
+                                        <span class="input-group-addon">cm</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">BMI</span>
+                                        <input id="bmi" type="text" readonly class="form-control">
+                                        <span class="input-group-addon">kg/m^2</span>
+                                        <div class="patient-bmi"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Blood Pressure</li>
+                                        <li class="list-group-item">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Systolic</span>
+                                                <input id="systolic" type="text" class="form-control">
+                                                <span class="input-group-addon">mm Hg</span>
+                                            </div>
+                                      
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Diastolic</span>
+                                                <input id="diastolic" type="text" class="form-control">
+                                                <span class="input-group-addon">mm Hg</span>
+                                            </div>
+                                          
+                                  
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Oxygen & Temperature</li>
+                                        <li class="list-group-item">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">SO2</span>
+                                                <input id="oxygen" type="text" class="form-control">
+                                                <span class="input-group-addon">%</span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <p>Oxygen Saturation:</p>
+                                                <div class="value last-spo2"></div>
+                                          </div>
+                                            <div class="col-md-8">
+                                                <div class="progress">
+                                                   <div class="progress-bar progress-bar-success bar-spo2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Temperature</span>
+                                                <input id="temp" type="text" class="form-control">
+                                                <span class="input-group-addon">°C</span>
+                                            </div>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        <button id="addForm" type="button" class="btn btn-primary" onclick="formTable()"><i class="fa fa-plus"></i>Save Progress</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">History</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table id="historyForm" class="table table-striped">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
       </div>
     </div>
   </div>
